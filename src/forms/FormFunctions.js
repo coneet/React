@@ -4,7 +4,12 @@ function changeHandler(event) {
         inputValue: event.target.value,
         focus: true
     }, () => {
-        this.props.updateState(this.state.inputValue, this.props.name);
+        if (this.props.updateState.length > 1) {
+            this.props.updateState[0].setState((prev) => {
+                prev[this.props.updateState[1]][this.props.name] = this.state.inputValue;
+            })
+        }
+
     })
 }
 

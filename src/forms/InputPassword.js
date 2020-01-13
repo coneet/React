@@ -27,7 +27,7 @@ class InputPassword extends Component {
                     required={this.props.required}
                     ref={this.inputRef}
                     minLength={this.props.minLength ? this.props.minLength : 0}
-                    maxLength={this.props.maxLength ? this.props.maxLength : 8}
+                    maxLength={this.props.maxLength ? this.props.maxLength : 100}
                 />
                 {
                     (this.props.required && this.state.focus && this.state.inputValue === '') &&
