@@ -22,7 +22,12 @@ class Flash extends PureComponent {
         this.flashMessageClass = {
             position: 'fixed',
             top: '0px',
-            left: '0px;'
+            left: '0px',
+            borderRadius : '0px',
+            width : '100%',
+            textAlign : 'center',
+            fontWeight : 'bold',
+            zIndex : '9999'
         }
     }
 
@@ -53,13 +58,13 @@ class Flash extends PureComponent {
         return ReactDOM.createPortal(
             (
                 ((this.state.status === 'S') ?
-                    <div onClick={this.hideFlashMessage} className={'alert alert-success position-fixed' + this.flashMessageClass}>
+                    <div style={this.flashMessageClass} onClick={this.hideFlashMessage} className={'alert alert-success position-fixed' + this.flashMessageClass}>
                         {
                             this.state.message ? this.state.message : <span>your request completed successfully, Thanks for using our services.</span>
                         }
                         <span className="float-right text-danger">X</span>
                     </div> :
-                    (this.state.status === 'F') ? (<div onClick={this.hideFlashMessage} className={'alert alert-danger position-fixed' + this.flashMessageClass}>
+                    (this.state.status === 'F') ? (<div onClick={this.hideFlashMessage} style={this.flashMessageClass} className={'alert alert-danger position-fixed' + this.flashMessageClass}>
                         {
                             this.state.message ? this.state.message : <span>Unable to perform your action successfully, Please try again!</span>
                         }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { InputPassword, InputEmail, showErrors } from '../forms/Inputs'
+import { InputPassword, InputEmail, showErrors, InputText } from '../forms/Inputs'
 import { Flash } from '../flash/Flash'
-import axios from 'axios';
+import axios from 'axios'
 
-class Login extends Component {
+class Register extends Component {
 
     constructor(props) {
         super(props)
@@ -12,6 +12,7 @@ class Login extends Component {
             login: {},
             status: '',
             formvalue: {
+                name: '',
                 email: '',
                 password: ''
             }
@@ -20,14 +21,13 @@ class Login extends Component {
     }
 
 
-    loginUser = (event) => {
+    registerUser = (event) => {
         if (this.formRef.current.checkValidity() && this.state.password === this.state.confirmPassword) {
-            axios.post('api/login', this.state.formvalue).then((success) => {
-                this.setState({ status: 'S', message:  success.data.message});
-                localStorage.setItem('_token', success.data.token);
-                this.props.history.push('/admin');
-            }).catch((error) => {
-                this.setState({ status: 'F', message: 'Invalid Credentials' });
+            axios.post('api/register', this.state.formvalue).then(() => {
+                this.setState({ status: 'S', message : 'Thanks for your registraion' });
+                this.formRef.current.reset();
+            }).catch(() => {
+                this.setState({ status: 'F', message : 'Duplicate Entry, Try Again' });
             })
         } else {
             this.setState({
@@ -44,15 +44,25 @@ class Login extends Component {
             <div className="container">
                 <Flash instance={this} status={this.state.status} />
                 <div className="col-md-4 mx-auto">
-                    <h2>Login</h2>
-                    <form autoComplete="off" noValidate ref={this.formRef} onSubmit={this.loginUser} method="post">
+                    <h2>Register</h2>
+                    <form autoComplete="off" noValidate ref={this.formRef} onSubmit={this.registerUser} method="post">
+                        <div className="form-group">
+                            <label htmlFor="name">Full Name</label>
+                            <InputText
+                                name="name"
+                                updateState={[this, 'formvalue']}
+                                required="Required"
+                                placeholder="Enter Fullname"
+                            />
+                        </div>
+
                         <div className="form-group">
                             <label htmlFor="email">Email ID</label>
                             <InputEmail
                                 name="email"
                                 updateState={[this, 'formvalue']}
-                                required="Please Enter Email ID"
-                                placeholder="Enter Email ID"
+                                required="Required"
+                                placeholder="Enter Email"
                             />
                         </div>
 
@@ -66,9 +76,8 @@ class Login extends Component {
                                 minLength="5"
                             />
                         </div>
-                        <button className="btn btn-info">Login</button>
-                        <p className="text-right"><Link to="/register">Don't have account</Link></p>
-                        <p className="text-right"><Link to="/forgot-password">Need Help</Link></p>
+                        <button className="btn btn-info">Register</button>
+                        <p className="text-right"><Link to="/login">Login</Link></p>
                     </form>
                 </div>
             </div>
@@ -76,4 +85,4 @@ class Login extends Component {
     }
 }
 
-export default Login
+export default Register
